@@ -4,38 +4,63 @@
 
 char *strcpy(char *destination, const char *source)
 {
-	/* TODO: Implement strcpy(). */
+	for (char *it = destination; *source != '\0'; ++it, ++source)
+		*it = *source;
 	return destination;
 }
 
 char *strncpy(char *destination, const char *source, size_t len)
 {
-	/* TODO: Implement strncpy(). */
+	char *it = destination;
+	for (; len > 0 && *source != '\0'; --len, ++source, ++it)
+	{
+		*it = *source;
+	}
+	while (len--) {
+		*it++ = 0; 
+	}
 	return destination;
 }
 
 char *strcat(char *destination, const char *source)
-{
-	/* TODO: Implement strcat(). */
+{	
+	char *it = destination;
+	while (*it++ != '\0');
+	*it--;
+	while (*source != '\0')
+	{
+		*it++ = *source++;
+	}
 	return destination;
 }
 
 char *strncat(char *destination, const char *source, size_t len)
 {
-	/* TODO: Implement strncat(). */
+	char *it = destination;
+	while (*it++ != '\0');
+	it--;
+	while (*source != '\0' && len--)
+	{
+		*it++ = *source++;
+	}
+	*it = '\0';
 	return destination;
 }
 
 int strcmp(const char *str1, const char *str2)
 {
-	/* TODO: Implement strcmp(). */
-	return -1;
+	while (*str1 != '\0' && (*str1 == *str2)) {
+		str1++, str2++;
+	}
+	return *str1 - *str2;
 }
 
 int strncmp(const char *str1, const char *str2, size_t len)
 {
-	/* TODO: Implement strncmp(). */
-	return -1;
+	while (--len && *str1 != '\0' && (*str1 == *str2)) {
+		str1++, str2++;
+	}
+	return *str1 - *str2;
 }
 
 size_t strlen(const char *str)
