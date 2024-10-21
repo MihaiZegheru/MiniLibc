@@ -9,8 +9,13 @@
 
 void *malloc(size_t size)
 {
-	/* TODO: Implement malloc(). */
-	return NULL;
+	void *ptr = mmap(NULL, size, PROT_READ | PROT_WRITE,
+					 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	if (ptr == NULL)
+		return NULL;
+	mem_list_add(ptr, size);
+
+	return ptr;
 }
 
 void *calloc(size_t nmemb, size_t size)
