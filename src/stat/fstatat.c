@@ -42,12 +42,42 @@ struct statx {
 
 int fstatat_statx(int fd, const char *restrict path, struct stat *restrict st, int flag)
 {
-	/* TODO: Implement fstatat_statx(). Use statx and makedev above. */
-	return -1;
+	struct statx out;
+	int result = syscall(__NR_statx, fd, path, &out, flag);
+	if (result < 0)
+	{
+		errno = -result;
+		return -1;
+	}
+	if (errno == ENOSYS)
+		return fstatat(fd, path, st, flag);
+
+	st->st_dev = makedev(out.stx_dev_major, out.stx_dev_minor);
+	st->st_ino = out.stx_ino;
+	st->st_mode = out.stx_mode;
+	st->st_nlink = out.stx_nlink;
+	st->st_uid = out.stx_uid;
+	st->st_gid = out.stx_gid;
+	st->st_rdev = makedev(out.stx_rdev_major, out.stx_rdev_minor);
+	st->st_size = out.stx_size;
+	st->st_blksize = out.stx_blksize;
+	st->st_blocks = out.stx_blocks;
+	st->st_atime = out.stx_atime.tv_sec;
+	st->st_atime_nsec = out.stx_atime.tv_nsec;
+	st->st_mtime = out.stx_mtime.tv_sec;
+	st->st_mtime_nsec = out.stx_mtime.tv_nsec;
+	st->st_ctime = out.stx_ctime.tv_sec;
+	st->st_ctime_nsec = out.stx_ctime.tv_nsec;
+	return 0;
 }
 
 int fstatat(int fd, const char *restrict path, struct stat *restrict st, int flag)
 {
-	/* TODO: Implement fstatat(). Use fstatat_statx(). */
-	return -1;
+	int result = syscall(__NR_newfstatat, fd, path, st, flag);
+	if (result < 0)
+	{
+		errno = -result;
+		return -1;
+	}
+	return 0;
 }

@@ -6,7 +6,7 @@
 
 int fstat(int fd, struct stat *st)
 {
-	int result = syscall(5, fd, st);
+	int result = syscall(__NR_fstat, fd, st);
 	if (result < 0)
 	{
 		errno = -result;

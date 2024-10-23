@@ -3,7 +3,7 @@
 #include <string.h>
 
 char *strcpy(char *destination, const char *source)
-{	
+{
 	char *it = destination;
 	while (*source)
 		*it++ = *source++;
@@ -20,12 +20,12 @@ char *strncpy(char *destination, const char *source, size_t len)
 	}
 	*it = *source;
 	while (len--)
-		*it++ = 0; 
+		*it++ = 0;
 	return destination;
 }
 
 char *strcat(char *destination, const char *source)
-{	
+{
 	char *it = destination;
 	while (*it)
 		it++;
@@ -76,7 +76,7 @@ char *strchr(const char *str, int c)
 			break;
 		str++;
 	}
-	return *str == c ? str : NULL;
+	return *str == c ? (char *)str : NULL;
 }
 
 char *strrchr(const char *str, int c)
@@ -84,7 +84,7 @@ char *strrchr(const char *str, int c)
 	char *r = NULL;
 	while(*str)
 	{
-		r = *str == c ? str : r;
+		r = *str == c ? (char *)str : r;
 		str++;
 	}
 	return r;
@@ -96,12 +96,12 @@ char *strstr(const char *haystack, const char *needle)
 	char *h_it;
 	while (*haystack)
 	{
-		h_it = haystack;
-		n_it = needle;
+		h_it = (char *)haystack;
+		n_it = (char *)needle;
 		while (*h_it && *h_it == *n_it)
 			h_it++, n_it++;
 		if (!*n_it)
-			return haystack;
+			return (char *)haystack;
 		haystack++;
 	}
 	return NULL;
@@ -114,12 +114,12 @@ char *strrstr(const char *haystack, const char *needle)
 	char *r = NULL;
 	while (*haystack)
 	{
-		h_it = haystack;
-		n_it = needle;
+		h_it = (char *)haystack;
+		n_it = (char *)needle;
 		while (*h_it && *h_it == *n_it)
 			h_it++, n_it++;
 		if (!*n_it)
-			r = haystack;
+			r = (char *)haystack;
 		haystack++;
 	}
 	return r;
